@@ -18,7 +18,7 @@
 #ifndef __qSlicerAutoPortPlacementModuleWidget_h
 #define __qSlicerAutoPortPlacementModuleWidget_h
 
-// SlicerQt includes
+// Slicer includes
 #include "qSlicerAbstractModuleWidget.h"
 
 #include "qSlicerAutoPortPlacementModuleExport.h"

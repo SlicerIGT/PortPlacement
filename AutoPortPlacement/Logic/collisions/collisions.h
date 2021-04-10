@@ -1,7 +1,7 @@
 #ifndef COLLISIONS_H
 #define COLLISIONS_H
 
-#include <Eigen/Dense>
+#include <itkeigen/Eigen/Dense>
 #include <vector>
 
 namespace Collisions

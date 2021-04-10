@@ -15,21 +15,12 @@
 
 ==============================================================================*/
 
-// Qt includes
-#include <QtPlugin>
-
 // AutoPortPlacement Logic includes
 #include <vtkSlicerAutoPortPlacementLogic.h>
 
 // AutoPortPlacement includes
 #include "qSlicerAutoPortPlacementModule.h"
 #include "qSlicerAutoPortPlacementModuleWidget.h"
-
-//-----------------------------------------------------------------------------
-#if (QT_VERSION < QT_VERSION_CHECK(5, 0, 0))
-#include <QtPlugin>
-Q_EXPORT_PLUGIN2(qSlicerAutoPortPlacementModule, qSlicerAutoPortPlacementModule);
-#endif
 
 //-----------------------------------------------------------------------------
 /// \ingroup Slicer_QtModules_ExtensionTemplate
@@ -43,8 +34,7 @@ public:
 // qSlicerAutoPortPlacementModulePrivate methods
 
 //-----------------------------------------------------------------------------
-qSlicerAutoPortPlacementModulePrivate
-::qSlicerAutoPortPlacementModulePrivate()
+qSlicerAutoPortPlacementModulePrivate::qSlicerAutoPortPlacementModulePrivate()
 {
 }
 
@@ -52,8 +42,7 @@ qSlicerAutoPortPlacementModulePrivate
 // qSlicerAutoPortPlacementModule methods
 
 //-----------------------------------------------------------------------------
-qSlicerAutoPortPlacementModule
-::qSlicerAutoPortPlacementModule(QObject* _parent)
+qSlicerAutoPortPlacementModule::qSlicerAutoPortPlacementModule(QObject* _parent)
   : Superclass(_parent)
   , d_ptr(new qSlicerAutoPortPlacementModulePrivate)
 {
@@ -65,19 +54,19 @@ qSlicerAutoPortPlacementModule::~qSlicerAutoPortPlacementModule()
 }
 
 //-----------------------------------------------------------------------------
-QString qSlicerAutoPortPlacementModule::helpText()const
+QString qSlicerAutoPortPlacementModule::helpText() const
 {
-  return "This is a loadable module bundled in an extension";
+  return "This is a loadable module that can be bundled in an extension";
 }
 
 //-----------------------------------------------------------------------------
-QString qSlicerAutoPortPlacementModule::acknowledgementText()const
+QString qSlicerAutoPortPlacementModule::acknowledgementText() const
 {
   return "This work was was partially funded by NIH grant 3P41RR013218-12S1";
 }
 
 //-----------------------------------------------------------------------------
-QStringList qSlicerAutoPortPlacementModule::contributors()const
+QStringList qSlicerAutoPortPlacementModule::contributors() const
 {
   QStringList moduleContributors;
   moduleContributors
@@ -88,7 +77,7 @@ QStringList qSlicerAutoPortPlacementModule::contributors()const
 }
 
 //-----------------------------------------------------------------------------
-QIcon qSlicerAutoPortPlacementModule::icon()const
+QIcon qSlicerAutoPortPlacementModule::icon() const
 {
   return QIcon(":/Icons/AutoPortPlacement.png");
 }
@@ -112,7 +101,7 @@ void qSlicerAutoPortPlacementModule::setup()
 }
 
 //-----------------------------------------------------------------------------
-qSlicerAbstractModuleRepresentation * qSlicerAutoPortPlacementModule
+qSlicerAbstractModuleRepresentation* qSlicerAutoPortPlacementModule
 ::createWidgetRepresentation()
 {
   return new qSlicerAutoPortPlacementModuleWidget;

@@ -1,13 +1,4 @@
-cmake_minimum_required(VERSION 3.5)
-
-if(NOT DEFINED CMAKE_MACOSX_RPATH)
-  set(CMAKE_MACOSX_RPATH OFF)
-endif()
-
-#-----------------------------------------------------------------------------
 project(vtkSlicer${MODULE_NAME}ModuleLogic)
-
-find_package(Eigen3 REQUIRED CONFIG)
 
 set(KIT ${PROJECT_NAME})
 
@@ -25,7 +16,6 @@ set(${KIT}_TARGET_LIBRARIES
   collisions
   davinci
   ${ITK_LIBRARIES}
-  Eigen3::Eigen
   optim
   vtkSlicerAnnotationsModuleMRML
   vtkSlicerMarkupsModuleMRML

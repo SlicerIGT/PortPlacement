@@ -18,7 +18,7 @@
 // Qt includes
 #include <QDebug>
 
-// SlicerQt includes
+// Slicer includes
 #include "qSlicerAutoPortPlacementModuleWidget.h"
 #include "ui_qSlicerAutoPortPlacementModuleWidget.h"
 

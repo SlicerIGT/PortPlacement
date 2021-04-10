@@ -18,7 +18,7 @@
 #ifndef __qSlicerAutoPortPlacementModule_h
 #define __qSlicerAutoPortPlacementModule_h
 
-// SlicerQt includes
+// Slicer includes
 #include "qSlicerLoadableModule.h"
 
 #include "qSlicerAutoPortPlacementModuleExport.h"
@@ -31,9 +31,7 @@ qSlicerAutoPortPlacementModule
   : public qSlicerLoadableModule
 {
   Q_OBJECT
-#ifdef Slicer_HAVE_QT5
   Q_PLUGIN_METADATA(IID "org.slicer.modules.loadable.qSlicerLoadableModule/1.0");
-#endif
   Q_INTERFACES(qSlicerLoadableModule);
 
 public:

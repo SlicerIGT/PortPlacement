@@ -46,6 +46,7 @@ vtkStandardNewMacro(vtkSlicerAutoPortPlacementLogic);
 
 namespace
 {
+
   // Given a cylisphere returned by the DavinciKinematics object,
   // returns a vtkMRMLLinearTransformNode that will transform the
   // vtkCylinderSource's output to correspond to the input cylisphere.
@@ -340,7 +341,7 @@ FindFeasiblePlan(vtkMRMLNode* taskFramesNode,
 
     // Get orientation part
     double quat[4];
-    taskFramesFiducial->GetNthMarkupOrientation(tIdx, quat);
+    taskFramesFiducial->GetNthControlPointOrientation(tIdx, quat);
     double rotMat[3][3];
     vtkMath::QuaternionToMatrix3x3(quat, rotMat);
     for (unsigned i = 0; i < 3; ++i)

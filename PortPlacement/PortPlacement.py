@@ -227,7 +227,7 @@ class PortPlacementWidget:
       self.currentMarkupsNode.RemoveObserver(self.onMarkupAddedTag)
 
     self.currentMarkupsNode = self.portListSelector.currentNode()
-    self.onMarkupAddedTag = self.currentMarkupsNode.AddObserver(slicer.vtkMRMLMarkupsNode.MarkupAddedEvent, self.onMarkupAdded)
+    self.onMarkupAddedTag = self.currentMarkupsNode.AddObserver(slicer.vtkMRMLMarkupsNode.PointAddedEvent, self.onMarkupAdded)
 
     self.updateTable()
 
@@ -268,7 +268,7 @@ class PortPlacementWidget:
     self.logic.retargetTools(self.targetSelector.currentNode())
 
   def onToolShapeChanged(self):
-      toolIdx = self.portsTable.selectionModel().currentIndex().row()
+      toolIdx = self.portsTable.selectionModel().currentIndex.row()
       if toolIdx < self.portsTableModel.rowCount:
         self.logic.setToolShape(toolIdx, self.radiusSpinBox.value, self.lengthSpinBox.value)
 
@@ -359,7 +359,7 @@ class PortPlacementWidget:
       evalString = 'globals()["%s"].%sTest()' % (moduleName, moduleName)
       tester = eval(evalString)
       tester.runTest()
-    except Exception, e:
+    except Exception as e:
       import traceback
       traceback.print_exc()
       qt.QMessageBox.warning(slicer.util.mainWindow(),
@@ -391,28 +391,23 @@ class PortPlacementLogic:
       self.toolSrc.SetHeight(length)
 
       # Create tool model using cylinder source
-      self.modelNode = slicer.vtkMRMLModelNode()
-      self.modelNode.HideFromEditorsOn()
-      self.modelNode.SetName(slicer.mrmlScene.GenerateUniqueName("Tool"))
-      polyData = self.toolSrc.GetOutput()
-      self.modelNode.SetAndObservePolyData(polyData)
-      slicer.mrmlScene.AddNode(self.modelNode)
+      self.modelNode = slicer.mrmlScene.AddNewNodeByClass('vtkMRMLModelNode', slicer.mrmlScene.GenerateUniqueName("Tool"))
+      #self.modelNode.HideFromEditorsOn()
+      self.modelNode.SetSelectable(False) # Prevent picking on the tool model (endless loop until tip reaches camera)
+      self.modelNode.SetPolyDataConnection(self.toolSrc.GetOutputPort())
+      self.modelNode.CreateDefaultDisplayNodes()
 
       # Create a DisplayNode for this node (so that it can control its
       # own visibility) and have modelNode observe it
-      self.modelDisplay = slicer.vtkMRMLModelDisplayNode()
+      self.modelDisplay = self.modelNode.GetDisplayNode()
       self.modelDisplay.SetColor(0,1,1) # cyan
-      slicer.mrmlScene.AddNode(self.modelDisplay)
-      self.modelNode.SetAndObserveDisplayNodeID(self.modelDisplay.GetID())
 
       # Create a transform for our tool model that will scale it to
       # the proper radius, length, and position. Leave the orientation
       # at the default.
-      self.transformNode = slicer.vtkMRMLLinearTransformNode()
-      self.transformNode.HideFromEditorsOn()
-      self.transformNode.SetName(slicer.mrmlScene.GenerateUniqueName("Transform"))
+      self.transformNode = slicer.mrmlScene.AddNewNodeByClass('vtkMRMLLinearTransformNode', slicer.mrmlScene.GenerateUniqueName("Transform"))
+      #self.transformNode.HideFromEditorsOn()
       self.updatePosition(position)
-      slicer.mrmlScene.AddNode(self.transformNode)
 
       # apply the new transform to our tool
       self.modelNode.SetAndObserveTransformNodeID(self.transformNode.GetID())
@@ -480,9 +475,9 @@ class PortPlacementLogic:
     self.clearMarkupsNode()
 
     self.markupsNode = node
-    if not (node is None):
+    if node:
       self.pointModifiedObserverTag = node.AddObserver(slicer.vtkMRMLMarkupsNode.PointModifiedEvent, self.onMarkupModified)
-      self.markupRemovedObserverTag = node.AddObserver(slicer.vtkMRMLMarkupsNode.MarkupRemovedEvent, self.onMarkupRemoved)
+      self.markupRemovedObserverTag = node.AddObserver(slicer.vtkMRMLMarkupsNode.PointRemovedEvent, self.onMarkupRemoved)
 
       # Add tools associated with the markups in markupsNode
       for i in range(node.GetNumberOfFiducials()):
@@ -532,7 +527,7 @@ class PortPlacementLogic:
   # If the markupsNode this logic is associated with was deleted,
   # clear the tools
   def onNodeRemoved(self):
-    if (self.markupsNode is None):
+    if not self.markupsNode:
       return
 
     if not slicer.mrmlScene.IsNodePresent(self.markupsNode):
@@ -558,9 +553,9 @@ class PortPlacementLogic:
 
   # Target all tools toward the targetFid
   def retargetTools(self, targetFid):
-    if self.markupsNode is None or \
-       targetFid.GetNumberOfFiducials() < 1 or \
-       targetFid == self.markupsNode:
+    if (self.markupsNode is None or
+       targetFid.GetNumberOfFiducials() < 1 or
+       targetFid == self.markupsNode):
       return
 
     import numpy

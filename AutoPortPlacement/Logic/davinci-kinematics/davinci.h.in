@@ -1,8 +1,8 @@
 #ifndef DAVINCI_KINEMATICS_H
 #define DAVINCI_KINEMATICS_H
 
-#include <Eigen/Dense>
-#include <Eigen/StdVector>
+#include <itkeigen/Eigen/Dense>
+#include <itkeigen/Eigen/StdVector>
 
 #include <vector>
 

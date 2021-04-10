@@ -2,8 +2,8 @@
 #define PORT_PLACEMENT_AUTO_PORT_PLACEMENT_LOGIC_OPTIM_OPTIM_H
 
 #include <davinci-kinematics/davinci.h>
-#include <Eigen/Dense>
-#include <Eigen/StdVector>
+#include <itkeigen/Eigen/Dense>
+#include <itkeigen/Eigen/StdVector>
 
 namespace Optim
 {
