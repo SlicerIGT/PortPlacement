@@ -3,9 +3,9 @@
 
 #include <iostream>
 
-int main(int, char* [])
+int main(int argc, char* argv[])
 {
-  DavinciKinematics kinematics;
+  DavinciKinematics kinematics(argv[1]);
 
   std::vector<double> q(6,0.0);
   q[0] = 0.1;

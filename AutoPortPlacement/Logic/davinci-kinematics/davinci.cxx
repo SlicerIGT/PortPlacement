@@ -130,6 +130,10 @@ DavinciKinematics::DavinciKinematics(const std::string& inputFilename)
 
 
   itk::DOMNode::Pointer dom = reader->GetOutput();
+  if (!dom)
+    {
+    return;
+    }
 
   itk::DOMNode::Pointer davinciParametersIntracorporeal = dom->Find("intracorporeal");
 

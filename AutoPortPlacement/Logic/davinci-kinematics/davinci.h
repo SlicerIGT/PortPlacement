@@ -30,7 +30,7 @@ struct DavinciParameters
 class DavinciKinematics
 {
 public:
-  DavinciKinematics(const std::string& inputFilename=std::string("@DAVINCI_PARAMS_FILE@"));
+  DavinciKinematics(const std::string& inputFilename);
 
   // Get frame at the end of the wrist (base of the gripper) given the
   // pose of the RCM and configuration q.

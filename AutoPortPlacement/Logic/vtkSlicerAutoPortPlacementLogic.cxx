@@ -116,9 +116,9 @@ vtkSlicerAutoPortPlacementLogic::vtkSlicerAutoPortPlacementLogic() :
   RightPassiveConfig(6),
   LeftActiveConfig(6),
   RightActiveConfig(6),
-  IsRobotInitialized(false)
+  IsRobotInitialized(false),
+  Kinematics(nullptr)
 {
-  this->Kinematics = new DavinciKinematics();
 
   this->CylinderSource = vtkSmartPointer<vtkCylinderSource>::New();
   this->CylinderSource->SetHeight(1.0);
@@ -127,11 +127,6 @@ vtkSlicerAutoPortPlacementLogic::vtkSlicerAutoPortPlacementLogic() :
 
   this->SphereSource = vtkSmartPointer<vtkSphereSource>::New();
   this->SphereSource->SetRadius(1.0);
-
-  this->Kinematics->getDefaultPassiveConfig(&(this->LeftPassiveConfig));
-  this->Kinematics->getDefaultPassiveConfig(&(this->RightPassiveConfig));
-  this->Kinematics->getDefaultActiveConfig(&(this->LeftActiveConfig));
-  this->Kinematics->getDefaultActiveConfig(&(this->RightActiveConfig));
 }
 
 //----------------------------------------------------------------------------
@@ -462,6 +457,17 @@ void vtkSlicerAutoPortPlacementLogic::SetMRMLSceneInternal(vtkMRMLScene * newSce
   events->InsertNextValue(vtkMRMLScene::NodeRemovedEvent);
   events->InsertNextValue(vtkMRMLScene::EndBatchProcessEvent);
   this->SetAndObserveMRMLSceneEventsInternal(newScene, events.GetPointer());
+  
+  if (!this->Kinematics)
+  {
+    std::string moduleShareDirectory = this->GetModuleShareDirectory() + "/davinci-parameters.xml";
+    this->Kinematics = new DavinciKinematics(moduleShareDirectory);
+    this->Kinematics->getDefaultPassiveConfig(&(this->LeftPassiveConfig));
+    this->Kinematics->getDefaultPassiveConfig(&(this->RightPassiveConfig));
+    this->Kinematics->getDefaultActiveConfig(&(this->LeftActiveConfig));
+    this->Kinematics->getDefaultActiveConfig(&(this->RightActiveConfig));
+  }
+
 }
 
 //-----------------------------------------------------------------------------

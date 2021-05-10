@@ -1,9 +1,9 @@
 #include <davinci-kinematics/davinci.h>
 #include <cmath>
 
-int main(int, char* [])
+int main(int argc, char* argv[])
 {
-  DavinciKinematics kinematics;
+  DavinciKinematics kinematics(argv[1]);
 
   DavinciParameters p = kinematics.getParams();
 

@@ -1,8 +1,9 @@
 #include <optim/optim.h>
 
-int main()
+int main(int argc, char* argv[])
 {
-  DavinciKinematics kinematics;
+  DavinciKinematics kinematics(argv[1]);
+
   // Rotate about +z by 180 degrees
   Eigen::Matrix3d baseOrientationL = Eigen::Matrix3d::Identity();
   baseOrientationL(0,0) = -1.0;

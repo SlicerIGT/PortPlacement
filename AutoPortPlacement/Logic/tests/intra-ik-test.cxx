@@ -1,9 +1,9 @@
 #include <davinci-kinematics/davinci.h>
 #include <iostream>
 
-int main()
+int main(int argc, char* argv[])
 {
-  DavinciKinematics kinematics;
+  DavinciKinematics kinematics(argv[1]);
 
   Eigen::Matrix4d baseFrame = Eigen::Matrix4d::Identity();
   baseFrame(0,0) = baseFrame(1,1) = -1.0;
