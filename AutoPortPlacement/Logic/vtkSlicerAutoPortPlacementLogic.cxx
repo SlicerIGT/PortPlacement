@@ -31,6 +31,7 @@
 #include <vtkMRMLLinearTransformNode.h>
 #include <vtkMRMLMarkupsFiducialNode.h>
 #include <vtkMRMLAnnotationROINode.h>
+#include <vtkMRMLMarkupsROINode.h>
 
 // VTK includes
 #include <vtkNew.h>
@@ -314,7 +315,10 @@ FindFeasiblePlan(vtkMRMLNode* taskFramesNode,
     vtkMRMLMarkupsFiducialNode::SafeDownCast(taskFramesNode);
   vtkMRMLMarkupsFiducialNode* portCurvePointsFiducial =
     vtkMRMLMarkupsFiducialNode::SafeDownCast(portCurveNode);
-  vtkMRMLAnnotationROINode* robotBaseROI =
+  vtkMRMLMarkupsROINode* robotBaseMarkupsROI =
+    vtkMRMLMarkupsROINode::SafeDownCast(robotBaseNode);
+  // legacy, for backward compatibility only:
+  vtkMRMLAnnotationROINode* robotBaseAnnotationROI =
     vtkMRMLAnnotationROINode::SafeDownCast(robotBaseNode);
 
   // Retrieve our task frames
@@ -374,8 +378,16 @@ FindFeasiblePlan(vtkMRMLNode* taskFramesNode,
   Eigen::Matrix3d baseOrientationR = Eigen::Matrix3d::Identity();
   double radii[3];
   double center[3];
-  robotBaseROI->GetRadiusXYZ(radii);
-  robotBaseROI->GetXYZ(center);
+  if (robotBaseMarkupsROI)
+    {
+    robotBaseMarkupsROI->GetRadiusXYZ(radii);
+    robotBaseMarkupsROI->GetXYZ(center);
+    }
+  else if (robotBaseAnnotationROI)
+    {
+    robotBaseAnnotationROI->GetRadiusXYZ(radii);
+    robotBaseAnnotationROI->GetXYZ(center);
+    }
   Eigen::Vector3d baseBoxMin, baseBoxMax;
   for (unsigned i = 0; i < 3; ++i)
     {
@@ -457,7 +469,7 @@ void vtkSlicerAutoPortPlacementLogic::SetMRMLSceneInternal(vtkMRMLScene * newSce
   events->InsertNextValue(vtkMRMLScene::NodeRemovedEvent);
   events->InsertNextValue(vtkMRMLScene::EndBatchProcessEvent);
   this->SetAndObserveMRMLSceneEventsInternal(newScene, events.GetPointer());
-  
+
   if (!this->Kinematics)
   {
     std::string moduleShareDirectory = this->GetModuleShareDirectory() + "/davinci-parameters.xml";

@@ -78,7 +78,7 @@ public:
   // 2) a vtkMRMLMarkupsFiducialNode representing the two endpoints of
   // a line of potential port positions;
   //
-  // 3) a vtkMRMLAnnotationROINode representing a bounding box of
+  // 3) a vtkMRMLMarkupsROINode/vtkMRMLAnnotationROINode representing a bounding box of
   // potential positions of the robot's base;
   //
   // Find a position for the robot base and configurations for the
