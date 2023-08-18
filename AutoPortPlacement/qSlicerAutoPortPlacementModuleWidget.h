@@ -36,7 +36,7 @@ public:
 
   typedef qSlicerAbstractModuleWidget Superclass;
   qSlicerAutoPortPlacementModuleWidget(QWidget *parent=0);
-  virtual ~qSlicerAutoPortPlacementModuleWidget();
+  ~qSlicerAutoPortPlacementModuleWidget() override;
 
   // If robot configuration is changed programmatically, have sliders
   // reflect change
@@ -55,7 +55,7 @@ public slots:
 protected:
   QScopedPointer<qSlicerAutoPortPlacementModuleWidgetPrivate> d_ptr;
 
-  virtual void setup();
+  void setup() override;
 
 private:
   Q_DECLARE_PRIVATE(qSlicerAutoPortPlacementModuleWidget);
